@@ -99,11 +99,21 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable(name = "id") Product pro, ProductModel productModel) {
+    public String update(@PathVariable(name = "id") Product pro, ProductModel productModel,  @RequestParam("attach")MultipartFile attach) {
         pro.setImage("");
         pro.setPrice(productModel.getPrice());
         pro.setAvailable(productModel.getAvailable());
         pro.setName(productModel.getName());
+        if (!attach.isEmpty()) {
+            String filename = attach.getOriginalFilename();
+            File file = new File(app.getRealPath("/files/product/" + filename));
+            pro.setImage("/files/product/" + filename);
+            try {
+                attach.transferTo(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         productRepository.save(pro);
         return "redirect:/admin/product/index";
     }

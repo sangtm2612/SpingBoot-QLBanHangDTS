@@ -10,6 +10,20 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt"%>
 <div>
+    <div class="mb-3 row">
+        <div class="col-auto me-auto">
+            <div>Id order: <span class="fw-bold">${order.id}</span></div>
+            <div>Create date: <span class="fw-bold"><fmt:formatDate pattern ="hh:mm:ss dd/MM/yyyy" value ="${order.createDate}"/></span></div>
+            <div>Staff: <span class="fw-bold text-primary">${order.account.username}</span></div>
+            <div>Status: <span class="fw-bold ${order.status == 0 ? 'text-secondary' : order.status == 1 ? 'text-warning' : 'text-success'}">${order.status == 0 ? 'Prepare' : order.status == 1 ? 'Transport' : 'Complete'}</span></div>
+        </div>
+        <div class="col-auto">
+            <div>Customer: <span class="fw-bold text-success">${order.fullname}</span></div>
+            <div>Phone: <span class="fw-bold">${order.phone}</span></div>
+            <div>Address: <span class="fw-bold">${order.address}</span></div>
+            <div>Total: <span class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${order.total}"/></span></div>
+        </div>
+    </div>
     <table id="ngu" class="table table-primary table-bordered text-center">
         <thead>
         <tr>
@@ -25,9 +39,9 @@
             <tr>
                 <td>${o.product.name}</td>
                 <td><img src="${o.product.image}" width="75"/></td>
-                <td>${o.price}</td>
+                <td class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${o.price}"/></td>
                 <td>${o.quantity}</td>
-                <td>${o.price * o.quantity}</td>
+                <td class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${o.price * o.quantity}"/></td>
             </tr>
         </c:forEach>
     </table>

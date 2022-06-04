@@ -6,7 +6,6 @@
     <table class="table table-primary table-bordered text-center">
         <thead>
         <tr>
-            <td></td>
             <td>Name</td>
             <td>Image</td>
             <td>Price</td>
@@ -17,10 +16,9 @@
         <tbody>
             <c:forEach items="${ data.content}" var="pro">
                 <tr>
-                    <td><input type="checkbox" value="" name=""> </td>
                     <td>${pro.name}</td>
                     <td><img src="${pro.image}" height="75"></td>
-                    <td>${pro.price}</td>
+                    <td class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${pro.price}"/></td>
                     <form action="/admin/order/add/${pro.id}" method="get">
                     <td><input type="number" class="form-control" name="quantity"/></td>
                         <td><button type="submit" class="btn btn-primary">Add to order</button></td>

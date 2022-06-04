@@ -25,7 +25,7 @@
                         <td>Address</td>
                         <td>Total</td>
                         <td>Status</td>
-                        <td colspan="2">Manipulation</td>
+                        <td colspan="3">Manipulation</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,9 +37,10 @@
                         <td>${order.fullname}</td>
                         <td>${order.phone}</td>
                         <td>${order.address}</td>
-                        <td class="fw-bold text-success"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${order.total}"/></td>
+                        <td class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${order.total}"/></td>
                         <td class="fw-bold ${order.status == 0 ? 'text-secondary' : order.status == 1 ? 'text-warning' : 'text-success'}">${order.status == 0 ? 'Prepare' : order.status == 1 ? 'Transport' : 'Complete'}</td>
                         <td><a class="btn btn-primary" href="/admin/order/view/${order.id}">View</a></td>
+                        <td><a class="btn btn-primary" href="/admin/order/edit/${order.id}">Edit</a></td>
                         <td><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal${order.id}">Delete</a></td>
 
                         <!-- Modal delete-->

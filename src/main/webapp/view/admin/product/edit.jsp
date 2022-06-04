@@ -3,9 +3,9 @@
 <div>
     <h1>ProductManagement</h1>
     <%--@elvariable id="pro" type="lombok"--%>
-    <form:form action="/admin/product/update/${pro.id}" method="post" modelAttribute="pro">
-<%--        <form:select cssClass="form-select" path="categoryId">--%>
-<%--            <form:option value="${pro.category.id}">${pro.category.name}</form:option>--%>
+    <form:form action="/admin/product/update/${pro.id}" method="post" enctype="multipart/form-data" modelAttribute="pro">
+<%--        <form:select cssClass="form-select" path="category">--%>
+<%--            <form:option value="${category.id}">${category.name}</form:option>--%>
 <%--            <form:options items="${listCate}" itemValue="id" itemLabel="name"></form:options>--%>
 <%--        </form:select>--%>
         <div class="mt-3">
@@ -14,7 +14,7 @@
         </div>
         <div class="mt-3">
             <form:label path="" class="form-lable">Image:</form:label>
-            <form:input type="file" path="" name="image" class="form-control"/>
+            <form:input type="file" path="" name="attach" class="form-control"/>
         </div>
         <div class="mt-3">
             <form:label path="price" class="form-lable">Price:</form:label>

@@ -14,7 +14,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +31,9 @@ public class AccountController {
     AccountRepository accountRepository;
 
     AccountServiceImp accountServiceImp = new AccountServiceImp();
+
+    @Autowired
+    ServletContext app;
 
     @GetMapping("/index")
     public String index(
@@ -43,14 +51,23 @@ public class AccountController {
     }
 
     @PostMapping("/store")
-    public String store(AccountModel acc) {
+    public String store(AccountModel acc, @RequestParam("attach") MultipartFile attach) {
         Account account = new Account();
         account.setFullname(acc.getFullname());
         account.setActivated(acc.getActivated());
         account.setAdmin(acc.getAdmin());
         account.setEmail(acc.getEmail());
         account.setPassword(acc.getPassword());
-        account.setPhoto("Chưa làm");
+        if (!attach.isEmpty()) {
+            String filename = attach.getOriginalFilename();
+            File file = new File(app.getRealPath("/files/account/" + filename));
+            account.setPhoto("/files/account/" + filename);
+            try {
+                attach.transferTo(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         account.setUsername(acc.getUsername());
         accountRepository.save(account);
         return "redirect:/admin/account/index";
@@ -79,12 +96,22 @@ public class AccountController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable(name = "id") Account acc, AccountModel accModel) {
+    public String update(@PathVariable(name = "id") Account acc, AccountModel accModel,  @RequestParam("attach") MultipartFile attach) {
         acc.setUsername(accModel.getUsername());
         acc.setFullname(accModel.getFullname());
         acc.setActivated(accModel.getActivated());
         acc.setAdmin(accModel.getAdmin());
         acc.setEmail(accModel.getEmail());
+        if (!attach.isEmpty()) {
+            String filename = attach.getOriginalFilename();
+            File file = new File(app.getRealPath("/files/account/" + filename));
+            acc.setPhoto("/files/account/" + filename);
+            try {
+                attach.transferTo(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         accountRepository.save(acc);
         return "redirect:/admin/account/index";
     }

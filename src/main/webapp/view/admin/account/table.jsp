@@ -9,8 +9,8 @@
                         <td>Fullname</td>
                         <td>Email</td>
                         <td>Photo</td>
-                        <td>isAdmin</td>
-                        <td>activated</td>
+                        <td>Role</td>
+                        <td>Activated</td>
                         <td colspan="2">Manipulation</td>
                     </tr>
                 </thead>
@@ -20,9 +20,9 @@
                         <td>${acc.username}</td>
                         <td>${acc.fullname}</td>
                         <td>${acc.email}</td>
-                        <td>${acc.photo}</td>
-                        <td>${acc.admin}</td>
-                        <td>${acc.activated}</td>
+                        <td><img src="${acc.photo}" width="75"></td>
+                        <td>${acc.admin == 1 ? "Admin" : "User"}</td>
+                        <td class="fw-bold ${acc.activated == 1 ? "text-success" : "text-danger"}">${acc.activated == 1 ? "Yes" : "No"}</td>
                         <td><a class="btn btn-primary" href="/admin/account/edit/${acc.id}">Edit</a></td>
                         <td><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal${acc.id}">Delete</a></td>
 

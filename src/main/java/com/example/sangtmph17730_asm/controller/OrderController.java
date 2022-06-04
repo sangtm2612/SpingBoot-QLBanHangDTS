@@ -1,5 +1,6 @@
 package com.example.sangtmph17730_asm.controller;
 
+import com.example.sangtmph17730_asm.bean.OrderDetailModel;
 import com.example.sangtmph17730_asm.bean.OrderModel;
 import com.example.sangtmph17730_asm.bean.ProductModel;
 import com.example.sangtmph17730_asm.entities.Category;
@@ -146,12 +147,41 @@ public class OrderController {
     @GetMapping("/view/{id}")
     public String view(
             @PathVariable("id") Order o,
+            @ModelAttribute("order") OrderModel order,
             Model model
     ) {
         model.addAttribute("order", o);
         model.addAttribute("formInp", "/view/admin/page.jsp");
         model.addAttribute("table", "/view/admin/orderDetail/view.jsp");
         return "admin/layout";
+    }
+
+    @GetMapping("/{idO}/orderdetail/delete/{idOD}")
+    public String deleteOrderDetail(
+            @PathVariable("idOD") OrderDetail od,
+            @PathVariable("idO") Order o,
+            Model model
+    ) {
+        orderDetailRepository.delete(od);
+        o.setTotal(getTotalOrder(o.getOrderDetails()));
+        orderRepository.save(o);
+        session.setAttribute("message", "Successful delete order detail!");
+        return "redirect:/admin/order/edit/" + o.getId();
+    }
+
+    @GetMapping("/{idO}/orderdetail/update/{idOD}")
+    public String updateOrderDetail(
+            @PathVariable("idOD") OrderDetail od,
+            @PathVariable("idO") Order o,
+            OrderDetailModel orderDetailModel,
+            Model model
+    ) {
+        od.setQuantity(orderDetailModel.getQuantity());
+        orderDetailRepository.save(od);
+        o.setTotal(getTotalOrder(o.getOrderDetails()));
+        orderRepository.save(o);
+        session.setAttribute("message", "Successful update order detail!");
+        return "redirect:/admin/order/edit/" + o.getId();
     }
 
 
@@ -177,39 +207,74 @@ public class OrderController {
         orderRepository.delete(o);
         return "redirect:/admin/order/index";
     }
-//
-//    @GetMapping("/edit/{id}")
-//    public String edit(
-//            @PathVariable("id") Product pro,
-//            Model model,
-//            @RequestParam(name="page", defaultValue="0") Integer page,
-//            @RequestParam(name="size", defaultValue="5") Integer size
-//            ) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Product> data = productRepository.findAll(pageable);
-//        model.addAttribute("formInp", "/view/admin/product/edit.jsp");
-//        model.addAttribute("table", "/view/admin/product/table.jsp");
-//        model.addAttribute("data" , data);
-//        model.addAttribute("listCate", categoryList());
-//        model.addAttribute("pro", pro);
-//        return "admin/layout";
-//    }
-//
-//    @PostMapping("/update/{id}")
-//    public String update(@PathVariable(name = "id") Product pro, ProductModel productModel) {
-//        pro.setImage("");
-//        pro.setPrice(productModel.getPrice());
-//        pro.setAvailable(productModel.getAvailable());
-//        pro.setName(productModel.getName());
-//        productRepository.save(pro);
-//        return "redirect:/admin/product/index";
-//    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(
+            @PathVariable("id") Order o,
+            @ModelAttribute("orderDetail") OrderDetailModel orderDetail,
+            Model model,
+            @RequestParam(name="page", defaultValue="0") Integer page,
+            @RequestParam(name="size", defaultValue="10") Integer size
+            ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> data = productRepository.findAll(pageable);
+        model.addAttribute("order", o);
+        model.addAttribute("formInp", "/view/admin/page.jsp");
+        model.addAttribute("table", "/view/admin/orderDetail/edit.jsp");
+        model.addAttribute("data", data);
+        return "admin/layout";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable(name = "id") Order o, OrderModel orderModel) {
+        o.setFullname(orderModel.getFullname());
+        o.setAddress(orderModel.getAddress());
+        o.setPhone(orderModel.getPhone());
+        orderRepository.save(o);
+        session.setAttribute("message", "Successful update infor!");
+        return "redirect:/admin/order/edit/" + o.getId();
+    }
+
+    @GetMapping("/{idO}/add/{idP}")
+    public String addProductToOrder(
+            @PathVariable(name = "idO") Order o,
+            @PathVariable(name = "idP") Product p,
+            @RequestParam(name = "quantity") int i,
+            Model model
+    ) {
+        for(OrderDetail od : o.getOrderDetails()) {
+            if (od.getProduct().getId() == p.getId()) {
+                od.setQuantity(od.getQuantity() + i);
+                orderDetailRepository.save(od);
+                o.setTotal(getTotalOrder(o.getOrderDetails()));
+                orderRepository.save(o);
+                session.setAttribute("message", "Successful add!");
+                return "redirect:/admin/order/edit/" + o.getId();
+            }
+        }
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setOrder(o);
+        orderDetail.setProduct(p);
+        orderDetail.setPrice(p.getPrice());
+        orderDetail.setQuantity(i);
+        orderDetailRepository.save(orderDetail);
+        session.setAttribute("message", "Successful add!");
+        return "redirect:/admin/order/edit/" + o.getId();
+    }
 
     public int getTotalOrder() {
         int sum = 0;
         if (orderDetails.size() == 0) {
             return 0;
         }
+        for (OrderDetail o : orderDetails) {
+            sum += o.getQuantity() * o.getPrice();
+        }
+        return sum;
+    }
+
+    public int getTotalOrder(List<OrderDetail> orderDetails) {
+        int sum = 0;
         for (OrderDetail o : orderDetails) {
             sum += o.getQuantity() * o.getPrice();
         }

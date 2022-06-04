@@ -37,9 +37,9 @@
                             <tr>
                                 <td>${o.product.name}</td>
                                 <td><img src="${o.product.image}" width="75"/></td>
-                                <td>${o.price}</td>
+                                <td><span class="text-danger fw-bold"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${o.price}"/></span></td>
                                 <td>${o.quantity}</td>
-                                <td>${o.price * o.quantity}</td>
+                                <td><span class="text-danger fw-bold"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${o.price * o.quantity}"/></span></td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -62,7 +62,7 @@
                                 <button type="submit" class="btn btn-primary mt-3">Payment</button>
                             </form:form>
                         </div>
-                        <div class="col-6 mt-3">Total order: ${totalOrder}</div>
+                        <div class="col-6 mt-3">Total order: <span class="text-danger fw-bold"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${totalOrder}"/></span></div>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 <div>
     <h1>AccountManagement</h1>
     <%--@elvariable id="acc" type="lombok"--%>
-    <form:form action="/admin/account/update/${acc.id}" method="post" modelAttribute="acc">
+    <form:form action="/admin/account/update/${acc.id}" method="post" enctype="multipart/form-data" modelAttribute="acc">
         <div class="mt-3">
             <form:label path="username" class="form-lable">Username:</form:label>
             <form:input path="username" name="username" class="form-control"/>
@@ -18,7 +18,7 @@
         </div>
         <div class="mt-3">
             <form:label path="" class="form-lable">Photo:</form:label>
-            <form:input type="file" path="" name="file" class="form-control"/>
+            <form:input type="file" path="" name="attach" class="form-control"/>
         </div>
         <div class="mt-3">
             <form:label path="admin" class="form-lable">isAdmin:</form:label>
