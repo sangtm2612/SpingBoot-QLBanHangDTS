@@ -22,8 +22,8 @@
         </div>
         <div class="mt-3">
             <form:label path="available" class="form-lable">Available:</form:label>
-            <form:radiobutton path="available" value="1" label="1" checked="checked"/>
-            <form:radiobutton path="available" value="0" label="0"/>
+            <form:radiobutton path="available" value="1" label="Yes" checked="checked"/>
+            <form:radiobutton path="available" value="0" label="No"/>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Update</button>
     </form:form>

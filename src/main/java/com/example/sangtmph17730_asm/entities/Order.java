@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,6 +30,7 @@ public class Order {
 
     @Column(name = "create_date", nullable = false)
     private Date createDate;
+
 
     @Column(name = "address", nullable = true)
     private String address;

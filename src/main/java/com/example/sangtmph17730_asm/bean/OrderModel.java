@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,5 +15,5 @@ public class OrderModel {
     private String phone;
     private String address;
     private List<Integer> products;
-    private List<Integer> quantitys;
+    private List<Integer> quantitys = new ArrayList<>();
 }

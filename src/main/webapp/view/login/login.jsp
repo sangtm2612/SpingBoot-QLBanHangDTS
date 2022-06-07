@@ -34,7 +34,7 @@
 					<img src="/images/img-01.png" alt="IMG">
 				</div>
 				<%--@elvariable id="acc" type="lombok"--%>
-				<form:form class="login100-form validate-form" action="/home/ngu" method="post" modelAttribute="acc">
+				<form:form class="login100-form validate-form" action="/login/hi" method="post" modelAttribute="acc">
 					<span class="login100-form-title">
 						Member Login
 					</span>

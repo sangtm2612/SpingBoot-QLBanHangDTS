@@ -2,9 +2,9 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <div>
-            <table class="table table-primary table-bordered text-center">
+            <table class="table text-center">
                 <thead>
-                    <tr>
+                    <tr class="table table-dark">
                         <th>Id</th>
                         <td>Name</td>
                         <td>Image</td>
@@ -19,9 +19,9 @@
                         <td>${pro.id}</td>
                         <td>${pro.name}</td>
                         <td><img src="${pro.image}" height="75"></td>
-                        <td>${pro.price}</td>
+                        <td class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${pro.price}"/></td>
                         <td><fmt:formatDate pattern ="hh:mm:ss dd/MM/yyyy" value ="${pro.createdDate}" /></td>
-                        <td>${pro.available}</td>
+                        <td>${pro.available == 1 ? 'Yes' : 'No'}</td>
                         <td><a class="btn btn-primary" href="/admin/product/edit/${pro.id}">Edit</a></td>
                         <td><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal${pro.id}">Delete</a></td>
 
@@ -50,35 +50,16 @@
             </table>
 
     <div class="row">
-        <div class="col-6">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a href="/admin/product/index">
-                        First page
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a href="/admin/product/index?page=${ data.number - 1 }">
-                        Previous page
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a href="#">
-                        ${ data.number }
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a href="/admin/product/index?page=${ data.number + 1 }">
-                        Next page
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a href="/admin/product/index?page=${ data.totalPages - 1 }">
-                        Last page
-                    </a>
-                </li>
-            </ul>
+        <div class="col-auto w-100">
+            <nav aria-label="Page navigation example w-100">
+                <ul class="pagination w-100 d-flex justify-content-center">
+                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=0">First page</a></li>
+                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.number - 1 }" >Previous page</a></li>
+                    <li class="page-item"><a class="page-link"> ${data.number + 1}/${data.totalPages}</a></li>
+                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.number + 1 }">Next page</a></li>
+                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.totalPages - 1 }">Last page</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="col-6"></div>
     </div>
 </div>

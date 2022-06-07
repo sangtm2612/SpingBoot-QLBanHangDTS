@@ -14,11 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequestMapping("/home")
 public class LoginController {
 
     @Autowired
@@ -32,14 +32,20 @@ public class LoginController {
         return "login/login";
     }
 
-    @PostMapping("/ngu")
+    @PostMapping("/login/hi")
     public String login(LoginModel model) {
         Account acc = accountRepository.findByUsernameAndPassword(model.getUsername(), model.getPassword());
+        session.setAttribute("user", acc);
         if (acc == null) {
             session.setAttribute("error", "Login fail!");
             return "redirect:/home/login";
         }
-        session.setAttribute("acc", acc);
         return "redirect:/admin/product/index";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        session.removeAttribute("user");
+        return "redirect:/login";
     }
 }

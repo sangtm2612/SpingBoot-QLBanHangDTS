@@ -5,7 +5,8 @@
             <%--@elvariable id="cate" type="lombok"--%>
             <form:form action="/admin/category/store" method="post" modelAttribute="cate">
                 <form:label path="name" class="form-lable">Name:</form:label>
-                <form:input path="name" name="name" class="form-control"/>
-                <button type="submit" class="btn btn-primary mt-3">Insert</button>
+                <form:input path="name" name="name" class="form-control mb-1"/>
+                <div><form:errors cssClass="text-danger" path="name"></form:errors></div>
+                <form:button type="submit" class="btn btn-primary">Insert</form:button>
             </form:form>
         </div>

@@ -18,6 +18,7 @@
 <body>
 <div class="container">
     <div class="menu-top mb-3">
+        <jsp:include page="${bannerr}"></jsp:include>
         <jsp:include page="${menuTop}"></jsp:include>
     </div>
     <div class="content">

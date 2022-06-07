@@ -71,6 +71,23 @@ public class OrderController {
         return "admin/layout";
     }
 
+    @PostMapping("/admin/order/search")
+    public String search(
+            @ModelAttribute("order") OrderModel order,
+            Model model,
+            @RequestParam(name="page", defaultValue="0") Integer page,
+            @RequestParam(name="size", defaultValue="10") Integer size
+    ) {
+        String value = (String) model.getAttribute("orderSearch");
+        System.out.println(value);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> data = orderRepository.findAll(pageable);
+        model.addAttribute("formInp", "/view/admin/order/create.jsp");
+        model.addAttribute("table", "/view/admin/order/table.jsp");
+        model.addAttribute("data" , data);
+        return "admin/layout";
+    }
+
     @GetMapping("/createOrder")
     public String insert(
             Model model,
@@ -192,7 +209,8 @@ public class OrderController {
         o.setFullname(orderModel.getFullname());
         o.setAddress(orderModel.getAddress());
         o.setTotal(getTotalOrder());
-        orderRepository.save(o);
+        Order od = orderRepository.save(o);
+        model.addAttribute("order", od);
         return "redirect:/admin/order/index";
     }
 
@@ -202,7 +220,7 @@ public class OrderController {
             session.setAttribute("error", "Can not delete!");
             return "redirect:/admin/order/index";
         } else {
-            session.setAttribute("message", "Successful delete!");
+            session.setAttribute("message", "Successful delete " + o.getId() + "!");
         }
         orderRepository.delete(o);
         return "redirect:/admin/order/index";

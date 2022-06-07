@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <div>
-            <table class="table table-primary table-bordered text-center">
+            <table class="table text-center">
                 <thead>
-                    <tr>
+                    <tr class="table-dark">
                         <th>Id</th>
-                        <td>Name</td>
-                        <td colspan="2">Manipulation</td>
+                        <th>Name</th>
+                        <th colspan="2">Manipulation</th>
                     </tr>
                 </thead>
                 <c:forEach items="${ data.content}" var="cate">
@@ -41,35 +41,16 @@
             </table>
 
     <div class="row">
-        <div class="col-6">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a href="/admin/category/index">
-                        First page
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a href="/admin/category/index?page=${ data.number - 1 }">
-                        Previous page
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a href="#">
-                        ${ data.number }
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a href="/admin/category/index?page=${ data.number + 1 }">
-                        Next page
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a href="/admin/category/index?page=${ data.totalPages - 1 }">
-                        Last page
-                    </a>
-                </li>
-            </ul>
+        <div class="col-auto w-100">
+            <nav aria-label="Page navigation example w-100">
+                <ul class="pagination w-100 d-flex justify-content-center">
+                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=0">First page</a></li>
+                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.number - 1 }" >Previous page</a></li>
+                    <li class="page-item"><a class="page-link"> ${data.number + 1}/${data.totalPages}</a></li>
+                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.number + 1 }">Next page</a></li>
+                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.totalPages - 1 }">Last page</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="col-6"></div>
     </div>
 </div>

@@ -44,15 +44,15 @@
             <div>Total: <span class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${order.total}"/></span></div>
         </div>
     </div>
-    <table id="ngu" class="table table-primary table-bordered text-center">
+    <table id="ngu" class="table text-center">
         <thead>
         <tr>
             <th>Product</th>
-            <td>Image</td>
-            <td>Price</td>
-            <td>Quantity</td>
-            <td>Total</td>
-            <td colspan="2">Manipulation</td>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th colspan="2">Manipulation</th>
         </tr>
         </thead>
         <c:forEach items="${ order.orderDetails}" var="o">

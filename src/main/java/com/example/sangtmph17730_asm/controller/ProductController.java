@@ -14,10 +14,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -53,7 +55,24 @@ public class ProductController {
     }
 
     @PostMapping("/store")
-    public String store(ProductModel pro, @RequestParam("attach")MultipartFile attach) {
+    public String store(
+            @Valid @ModelAttribute("pro") ProductModel pro,
+            @RequestParam("attach")MultipartFile attach,
+            Model model,
+            BindingResult result,
+            @RequestParam(name="page", defaultValue="0") Integer page,
+            @RequestParam(name="size", defaultValue="5") Integer size
+    ) {
+        if (result.hasErrors()) {
+            System.out.println("ngu");
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Product> data = productRepository.findAll(pageable);
+            model.addAttribute("formInp", "/view/admin/product/create.jsp");
+            model.addAttribute("table", "/view/admin/product/table.jsp");
+            model.addAttribute("data" , data);
+            model.addAttribute("listCate", categoryList());
+            return "admin/layout";
+        }
         Product product = new Product();
         product.setCreatedDate(new Date());
         product.setImage("");

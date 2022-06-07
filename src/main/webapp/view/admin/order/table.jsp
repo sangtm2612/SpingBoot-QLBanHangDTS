@@ -14,23 +14,27 @@
         </div>
         <c:remove var="message" scope="session"></c:remove>
     </c:if>
-            <table class="table table-primary table-bordered text-center">
+    <c:set var="i" scope="session" value="0"/>
+            <table class="table text-center">
                 <thead>
-                    <tr>
+                    <tr class="table-dark">
+                        <th></th>
                         <th>Id</th>
-                        <td>CreateDate</td>
-                        <td>Staff</td>
-                        <td>Customer</td>
-                        <td>Phone</td>
-                        <td>Address</td>
-                        <td>Total</td>
-                        <td>Status</td>
-                        <td colspan="3">Manipulation</td>
+                        <th>CreateDate</th>
+                        <th>Staff</th>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th colspan="3">Manipulation</th>
                     </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${ data.content}" var="order">
                     <tr>
+                        <td><input type="checkbox" value="${i}"> </td>
+                        <c:set var="i" scope="session" value="${i = i + 1}"/>
                         <td>${order.id}</td>
                         <td><fmt:formatDate pattern ="hh:mm:ss dd/MM/yyyy" value ="${order.createDate}"/></td>
                         <td>${order.account.username}</td>
@@ -48,15 +52,15 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Message</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Bạn có muốn xóa hóa đơn ${order.id}?
+                                        Do you want to delete order ${order.id}?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                        <a class="btn btn-danger" href="/admin/order/delete/${order.id}">Xóa</a>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <a class="btn btn-danger" href="/admin/order/delete/${order.id}">Confirm</a>
                                     </div>
                                 </div>
                             </div>
@@ -68,36 +72,17 @@
 
             </table>
 
-<%--    <div class="row">--%>
-<%--        <div class="col-6">--%>
-<%--            <ul class="pagination">--%>
-<%--                <li class="page-item">--%>
-<%--                    <a href="/admin/product/index">--%>
-<%--                        First page--%>
-<%--                    </a>--%>
-<%--                </li>--%>
-<%--                <li class="page-item">--%>
-<%--                    <a href="/admin/product/index?page=${ data.number - 1 }">--%>
-<%--                        Previous page--%>
-<%--                    </a>--%>
-<%--                </li>--%>
-<%--                <li class="page-item">--%>
-<%--                    <a href="#">--%>
-<%--                        ${ data.number }--%>
-<%--                    </a>--%>
-<%--                </li>--%>
-<%--                <li class="page-item">--%>
-<%--                    <a href="/admin/product/index?page=${ data.number + 1 }">--%>
-<%--                        Next page--%>
-<%--                    </a>--%>
-<%--                </li>--%>
-<%--                <li class="page-item">--%>
-<%--                    <a href="/admin/product/index?page=${ data.totalPages - 1 }">--%>
-<%--                        Last page--%>
-<%--                    </a>--%>
-<%--                </li>--%>
-<%--            </ul>--%>
-<%--        </div>--%>
-        <div class="col-6"></div>
+    <div class="row">
+        <div class="col-auto w-100">
+            <nav aria-label="Page navigation example w-100">
+                <ul class="pagination w-100 d-flex justify-content-center">
+                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/order/index?page=0">First page</a></li>
+                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/order/index?page=${ data.number - 1 }" >Previous page</a></li>
+                    <li class="page-item"><a class="page-link"> ${data.number + 1}/${data.totalPages}</a></li>
+                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/order/index?page=${ data.number + 1 }">Next page</a></li>
+                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/order/index?page=${ data.totalPages - 1 }">Last page</a></li>
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>

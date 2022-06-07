@@ -10,6 +10,7 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="input" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var="i" scope="session" value="0"/>
 <div>
     <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Order detail <i class="bi bi-cart"></i></button>
 
@@ -22,9 +23,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-primary table-bordered text-center">
+                    <table class="table text-center">
                         <thead>
-                        <tr>
+                        <tr class="table-dark">
                             <th>Product</th>
                             <td>Image</td>
                             <td>Price</td>
@@ -40,6 +41,7 @@
                                 <td><span class="text-danger fw-bold"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${o.price}"/></span></td>
                                 <td>${o.quantity}</td>
                                 <td><span class="text-danger fw-bold"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${o.price * o.quantity}"/></span></td>
+                                <td><a class="btn btn-primary" href="/admin/order/edit/${order.id}" >Edit quantity</a></td>
                             </tr>
                         </c:forEach>
                     </table>
