@@ -18,7 +18,7 @@ public class ProductModel {
     private String name;
     private String image;
     @Min(1)
-    @Max(999999)
+    @Max(999999999)
     private Integer price;
     @NotNull
     private Integer available;

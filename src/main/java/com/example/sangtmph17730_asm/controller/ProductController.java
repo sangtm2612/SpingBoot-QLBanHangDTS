@@ -7,11 +7,13 @@ import com.example.sangtmph17730_asm.entities.Category;
 import com.example.sangtmph17730_asm.entities.Product;
 import com.example.sangtmph17730_asm.repository.*;
 import com.example.sangtmph17730_asm.services.AccountServiceImp;
+import com.example.sangtmph17730_asm.utils.ExportUtil;
 import org.apache.naming.java.javaURLContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,14 +31,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/product")
 public class ProductController {
+
+    @Autowired
+    ServletContext app;
+
     @Autowired
     ProductRepository productRepository;
 
     @Autowired
     CategoryRepository categoryRepository;
 
-    @Autowired
-    ServletContext app;
 
     @GetMapping("/index")
     public String index(
@@ -45,12 +49,22 @@ public class ProductController {
                     @RequestParam(name="page", defaultValue="0") Integer page,
                     @RequestParam(name="size", defaultValue="5") Integer size
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Product> data = productRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/product/create.jsp");
         model.addAttribute("table", "/view/admin/product/table.jsp");
         model.addAttribute("data" , data);
         model.addAttribute("listCate", categoryList());
+        return "admin/layout";
+    }
+
+    @GetMapping("/export")
+    public String export() {
+        try {
+            ExportUtil.writeExcel(productRepository.findAll(), app.getRealPath("/file/excel/product.xlsx"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return "admin/layout";
     }
 
@@ -65,7 +79,7 @@ public class ProductController {
     ) {
         if (result.hasErrors()) {
             System.out.println("ngu");
-            Pageable pageable = PageRequest.of(page, size);
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
             Page<Product> data = productRepository.findAll(pageable);
             model.addAttribute("formInp", "/view/admin/product/create.jsp");
             model.addAttribute("table", "/view/admin/product/table.jsp");
@@ -107,7 +121,7 @@ public class ProductController {
             @RequestParam(name="page", defaultValue="0") Integer page,
             @RequestParam(name="size", defaultValue="5") Integer size
             ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Product> data = productRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/product/edit.jsp");
         model.addAttribute("table", "/view/admin/product/table.jsp");

@@ -7,10 +7,12 @@ import com.example.sangtmph17730_asm.entities.Category;
 import com.example.sangtmph17730_asm.repository.AccountRepository;
 import com.example.sangtmph17730_asm.repository.CategoryRepository;
 import com.example.sangtmph17730_asm.services.AccountServiceImp;
+import com.example.sangtmph17730_asm.utils.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +44,7 @@ public class AccountController {
                     @RequestParam(name="page", defaultValue="0") Integer page,
                     @RequestParam(name="size", defaultValue="5") Integer size
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Account> data = accountRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/account/create.jsp");
         model.addAttribute("table", "/view/admin/account/table.jsp");
@@ -57,7 +59,7 @@ public class AccountController {
         account.setActivated(acc.getActivated());
         account.setAdmin(acc.getAdmin());
         account.setEmail(acc.getEmail());
-        account.setPassword(acc.getPassword());
+        account.setPassword(EncryptUtil.encrypt(acc.getPasswordConfirm()));
         if (!attach.isEmpty()) {
             String filename = attach.getOriginalFilename();
             File file = new File(app.getRealPath("/files/account/" + filename));
@@ -86,7 +88,7 @@ public class AccountController {
             @RequestParam(name="page", defaultValue="0") Integer page,
             @RequestParam(name="size", defaultValue="5") Integer size
             ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Account> data = accountRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/account/edit.jsp");
         model.addAttribute("table", "/view/admin/account/table.jsp");

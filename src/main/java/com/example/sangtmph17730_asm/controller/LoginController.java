@@ -6,6 +6,7 @@ import com.example.sangtmph17730_asm.entities.Account;
 import com.example.sangtmph17730_asm.entities.Category;
 import com.example.sangtmph17730_asm.repository.AccountRepository;
 import com.example.sangtmph17730_asm.repository.CategoryRepository;
+import com.example.sangtmph17730_asm.utils.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,11 +35,13 @@ public class LoginController {
 
     @PostMapping("/login/hi")
     public String login(LoginModel model) {
-        Account acc = accountRepository.findByUsernameAndPassword(model.getUsername(), model.getPassword());
-        session.setAttribute("user", acc);
+        Account acc = accountRepository.findByUsername(model.getUsername());
+        if (acc != null && EncryptUtil.check(model.getPassword(), acc.getPassword())) {
+            session.setAttribute("user", acc);
+        }
         if (acc == null) {
             session.setAttribute("error", "Login fail!");
-            return "redirect:/home/login";
+            return "redirect:/login";
         }
         return "redirect:/admin/product/index";
     }

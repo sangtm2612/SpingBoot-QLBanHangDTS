@@ -13,6 +13,10 @@
                     <form:input type="password" path="password" name="password" class="form-control"/>
                 </div>
                 <div class="mt-3">
+                    <form:label path="passwordConfirm" class="form-lable">Password confirm:</form:label>
+                    <form:input type="password" path="passwordConfirm" class="form-control"/>
+                </div>
+                <div class="mt-3">
                     <form:label path="fullname" class="form-lable">Fullname:</form:label>
                     <form:input path="fullname" name="fullname" class="form-control"/>
                 </div>

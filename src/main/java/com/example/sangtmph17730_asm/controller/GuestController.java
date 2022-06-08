@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,7 +55,7 @@ public class GuestController {
             @RequestParam(name="page", defaultValue="0") Integer page,
             @RequestParam(name="size", defaultValue="20") Integer size
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Product> data = productRepository.findAll(pageable);
         Order order = new Order();
         session.setAttribute("order", order);
@@ -96,7 +97,7 @@ public class GuestController {
             @RequestParam(name="page", defaultValue="0") Integer page,
             @RequestParam(name="size", defaultValue="20") Integer size
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Product> data = productRepository.findAll(pageable);
         model.addAttribute("data" , data);
 

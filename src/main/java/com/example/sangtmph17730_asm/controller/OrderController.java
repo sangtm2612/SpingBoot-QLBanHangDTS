@@ -3,15 +3,13 @@ package com.example.sangtmph17730_asm.controller;
 import com.example.sangtmph17730_asm.bean.OrderDetailModel;
 import com.example.sangtmph17730_asm.bean.OrderModel;
 import com.example.sangtmph17730_asm.bean.ProductModel;
-import com.example.sangtmph17730_asm.entities.Category;
-import com.example.sangtmph17730_asm.entities.Order;
-import com.example.sangtmph17730_asm.entities.OrderDetail;
-import com.example.sangtmph17730_asm.entities.Product;
+import com.example.sangtmph17730_asm.entities.*;
 import com.example.sangtmph17730_asm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +61,7 @@ public class OrderController {
                     @RequestParam(name="page", defaultValue="0") Integer page,
                     @RequestParam(name="size", defaultValue="10") Integer size
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Order> data = orderRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/order/create.jsp");
         model.addAttribute("table", "/view/admin/order/table.jsp");
@@ -71,7 +69,22 @@ public class OrderController {
         return "admin/layout";
     }
 
-    @PostMapping("/admin/order/search")
+    @GetMapping("/status/update/{status}/{id}")
+    public String updateStatus(
+        @PathVariable("status") int status,
+        @PathVariable("id") Order o
+    ) {
+        if (status == 1) {
+            Account acc = (Account) session.getAttribute("user");
+            o.setAccount(acc);
+        }
+        o.setStatus(status);
+        orderRepository.save(o);
+        session.setAttribute("message", "Order " + o.getId() + " update successfuly!");
+        return "redirect:/admin/order/index";
+    }
+
+    @GetMapping("/search")
     public String search(
             @ModelAttribute("order") OrderModel order,
             Model model,
@@ -80,7 +93,7 @@ public class OrderController {
     ) {
         String value = (String) model.getAttribute("orderSearch");
         System.out.println(value);
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Order> data = orderRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/order/create.jsp");
         model.addAttribute("table", "/view/admin/order/table.jsp");
@@ -95,9 +108,10 @@ public class OrderController {
             @RequestParam(name="page", defaultValue="0") Integer page,
             @RequestParam(name="size", defaultValue="5") Integer size
     ) {
+        Account acc = (Account) session.getAttribute("user");
         orderDetails = new ArrayList<>();
         Order o = new Order();
-        o.setAccount(accountRepository.getById(1));
+        o.setAccount(acc);
         o.setTotal(0);
         o.setCreateDate(new Date());
         o.setAddress("");
@@ -106,7 +120,7 @@ public class OrderController {
         o.setStatus(0);
         Order order = orderRepository.save(o);
         session.setAttribute("order", order);
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Product> data = productRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/order/createOrder/create.jsp");
         model.addAttribute("table", "/view/admin/order/createOrder/tableProduct.jsp");
@@ -130,7 +144,7 @@ public class OrderController {
                 o.setQuantity(o.getQuantity() + quantity);
                 orderDetails.set(i, o);
                 model.addAttribute("listOD", orderDetails);
-                Pageable pageable = PageRequest.of(page, size);
+                Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
                 model.addAttribute("totalOrder", getTotalOrder());
                 Page<Product> data = productRepository.findAll(pageable);
                 model.addAttribute("formInp", "/view/admin/order/createOrder/create.jsp");
@@ -151,9 +165,9 @@ public class OrderController {
         OrderDetail od = orderDetailRepository.save(orderDetail);
         orderDetails.add(od);
         model.addAttribute("totalOrder", getTotalOrder());
-        session.setAttribute("message", "Success");
+        session.setAttribute("message", "Added product " + pro.getName() + " to cart!");
         model.addAttribute("listOD", orderDetails);
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Product> data = productRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/order/createOrder/create.jsp");
         model.addAttribute("table", "/view/admin/order/createOrder/tableProduct.jsp");
@@ -234,7 +248,7 @@ public class OrderController {
             @RequestParam(name="page", defaultValue="0") Integer page,
             @RequestParam(name="size", defaultValue="10") Integer size
             ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Product> data = productRepository.findAll(pageable);
         model.addAttribute("order", o);
         model.addAttribute("formInp", "/view/admin/page.jsp");

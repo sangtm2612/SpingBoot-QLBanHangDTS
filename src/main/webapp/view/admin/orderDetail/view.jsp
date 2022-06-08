@@ -15,7 +15,7 @@
             <div>Id order: <span class="fw-bold">${order.id}</span></div>
             <div>Create date: <span class="fw-bold"><fmt:formatDate pattern ="hh:mm:ss dd/MM/yyyy" value ="${order.createDate}"/></span></div>
             <div>Staff: <span class="fw-bold text-primary">${order.account.username}</span></div>
-            <div>Status: <span class="fw-bold ${order.status == 0 ? 'text-secondary' : order.status == 1 ? 'text-warning' : 'text-success'}">${order.status == 0 ? 'Prepare' : order.status == 1 ? 'Transport' : 'Complete'}</span></div>
+            <div>Status: <span class="fw-bold ${order.status == 0 ? 'text-secondary' : order.status == 1 ? 'text-primary' : order.status == 2 ? 'text-warning' : 'text-success'}">${order.status == 0 ? 'Wait' : order.status == 1 ? 'Prepare' : order.status == 2 ? 'Transport' : 'Complete'}</span></div>
         </div>
         <div class="col-auto">
             <div>Customer: <span class="fw-bold text-success">${order.fullname}</span></div>

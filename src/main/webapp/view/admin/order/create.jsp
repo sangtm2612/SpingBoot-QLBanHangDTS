@@ -8,7 +8,7 @@
                     <a class="btn btn-primary" href="/admin/order/createOrder">Create order</a>
                 </div>
                 <div class="col-2">
-                    <form action="/admin/order/search" method="post" class="d-flex">
+                    <form action="/admin/order/search" method="get" class="d-flex">
                         <input type="text" class="form-control form-control-sm mt-1 me-1" name="orderSearch" placeholder="Order search">
                         <button type="submit" class="btn btn-primary btn-sm">Search</button>
                     </form>

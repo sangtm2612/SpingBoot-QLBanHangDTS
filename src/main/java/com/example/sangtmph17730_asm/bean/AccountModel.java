@@ -3,10 +3,12 @@ package com.example.sangtmph17730_asm.bean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.implementation.bind.annotation.Empty;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -15,8 +17,10 @@ import javax.validation.constraints.NotNull;
 public class AccountModel {
     @NotBlank
     private String username;
-    @NotBlank
+    @NotEmpty
     private String password;
+    @NotEmpty
+    private String passwordConfirm;
     @NotBlank
     private String fullname;
     @NotBlank

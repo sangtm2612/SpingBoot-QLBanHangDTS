@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,7 +33,7 @@ public class CategoryController {
                         @RequestParam(name="size", defaultValue="5") Integer size,
                     BindingResult result
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Category> data = categoryRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/category/create.jsp");
         model.addAttribute("table", "/view/admin/category/table.jsp");
@@ -50,7 +51,7 @@ public class CategoryController {
     ) {
         if (result.hasErrors()) {
             System.out.println("lỗi");
-            Pageable pageable = PageRequest.of(page, size);
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
             Page<Category> data = categoryRepository.findAll(pageable);
             model.addAttribute("formInp", "/view/admin/category/create.jsp");
             model.addAttribute("table", "/view/admin/category/table.jsp");
@@ -77,7 +78,7 @@ public class CategoryController {
             @RequestParam(name="page", defaultValue="0") Integer page,
             @RequestParam(name="size", defaultValue="5") Integer size
             ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
         Page<Category> data = categoryRepository.findAll(pageable);
         model.addAttribute("formInp", "/view/admin/category/edit.jsp");
         model.addAttribute("table", "/view/admin/category/table.jsp");
@@ -97,7 +98,7 @@ public class CategoryController {
     ) {
         if (result.hasErrors()) {
             System.out.println("lỗi");
-            Pageable pageable = PageRequest.of(page, size);
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
             Page<Category> data = categoryRepository.findAll(pageable);
             model.addAttribute("formInp", "/view/admin/category/create.jsp");
             model.addAttribute("table", "/view/admin/category/table.jsp");

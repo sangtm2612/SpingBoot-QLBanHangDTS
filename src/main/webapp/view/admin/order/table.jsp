@@ -42,10 +42,18 @@
                         <td>${order.phone}</td>
                         <td>${order.address}</td>
                         <td class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${order.total}"/></td>
-                        <td class="fw-bold ${order.status == 0 ? 'text-secondary' : order.status == 1 ? 'text-warning' : 'text-success'}">${order.status == 0 ? 'Prepare' : order.status == 1 ? 'Transport' : 'Complete'}</td>
+                        <td class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
+                            <a class="btn btn-outline-secondary ${order.status == 0 ? 'active' : 'disabled'}">Wait</a>
+                            <a class="btn btn-outline-primary ${order.status == 1 ? 'active' : order.status == 2 || order.status == 3 ? 'disabled' : ''}" href="/admin/order/status/update/1/${order.id}">Prepare</a>
+                            <a class="btn btn-outline-warning ${order.status == 2 ? 'active' : order.status == 0 || order.status == 3 ? 'disabled' : ''}" href="/admin/order/status/update/2/${order.id}">Transport</a>
+                            <a class="btn btn-outline-success ${order.status == 3 ? 'active' : order.status == 0 || order.status == 1 ? 'disabled' : ''}" href="/admin/order/status/update/3/${order.id}">Complete</a>
+                        </td>
                         <td><a class="btn btn-primary" href="/admin/order/view/${order.id}">View</a></td>
-                        <td><a class="btn btn-primary" href="/admin/order/edit/${order.id}">Edit</a></td>
-                        <td><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal${order.id}">Delete</a></td>
+                        <td><a class="btn btn-primary ${order.status == 2 || order.status == 3 ? 'disabled' : ''}" href="/admin/order/edit/${order.id}">Edit</a></td>
+                        <td><a class="btn btn-danger ${order.status == 2 || order.status == 3 ? 'disabled' : ''}" data-bs-toggle="modal" data-bs-target="#exampleModal${order.id}">Delete</a></td>
+
+
+
 
                         <!-- Modal delete-->
                         <div class="modal fade" id="exampleModal${order.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

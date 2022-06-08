@@ -28,4 +28,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Insert</button>
             </form:form>
+            <a class="btn btn-primary mt-3">Import</a>
+            <a class="btn btn-primary mt-3" href="/admin/product/export">Export</a>
         </div>
