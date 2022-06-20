@@ -9,10 +9,7 @@ import com.example.sangtmph17730_asm.entities.OrderDetail;
 import com.example.sangtmph17730_asm.entities.Product;
 import com.example.sangtmph17730_asm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -148,6 +145,24 @@ public class GuestController {
         orderRepository.delete(order);
         session.setAttribute("message", "Successfully deleted order " + order.getId() +"!");
         return "redirect:/home/guest/product";
+    }
+
+    @PostMapping("/search")
+    public String search(
+            @RequestParam("phone") String phone,
+            Model model,
+            @RequestParam(name="page", defaultValue="0") Integer page,
+            @RequestParam(name="size", defaultValue="5") Integer size
+                      ) {
+        List<Order> orders = orderRepository.findOrderByPhone(phone);
+        System.out.println(orders.size());
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,"id"));
+        final int start = (int) pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), orders.size());
+        Page<Order> data = new PageImpl<>(orders.subList(start, end), pageable, orders.size());
+        model.addAttribute("data" ,data);
+        model.addAttribute("contentt", "/view/guest/history/table.jsp");
+        return "guest/layout";
     }
 
     public int getTotalOrder(List<OrderDetail> orderDetails) {

@@ -147,13 +147,16 @@ public class ExportUtil {
         }
         
         Cell cell = row.createCell(COLUMN_INDEX_CATE_ID);
-        cell.setCellValue(p.getCategory().getId());
+        cell.setCellValue(p.getCategory().getId() + "") ;
          
         cell = row.createCell(COLUMN_INDEX_CATE_NAME);
         cell.setCellValue(p.getCategory().getName());
  
         cell = row.createCell(COLUMN_INDEX_PRODUCT_ID);
         cell.setCellValue(p.getId());
+
+        cell = row.createCell(COLUMN_INDEX_PRODUCT_NAME);
+        cell.setCellValue(p.getName());
  
         cell = row.createCell(COLUMN_INDEX_PRODUCT_CREATEDATE);
         cell.setCellValue(p.getCreatedDate() + "");
@@ -162,7 +165,7 @@ public class ExportUtil {
         cell.setCellValue(p.getImage());
 
         cell = row.createCell(COLUMN_INDEX_PRODUCT_PRICE);
-        cell.setCellValue(p.getPrice());
+        cell.setCellValue(p.getPrice() + "");
 
         cell = row.createCell(COLUMN_INDEX_PRODUCT_AVAILABLE);
         cell.setCellValue(p.getAvailable());

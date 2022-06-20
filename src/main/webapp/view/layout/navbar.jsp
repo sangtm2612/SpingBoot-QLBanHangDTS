@@ -12,6 +12,9 @@
                     <a class="nav-link" href="/admin/product/index">Product</a>
                 </li>
                 <li class="nav-item border border-light rounded mx-1">
+                    <a class="nav-link" href="/admin/discount/index">Discount</a>
+                </li>
+                <li class="nav-item border border-light rounded mx-1">
                     <a class="nav-link" href="/admin/account/index">Account</a>
                 </li>
                 <li class="nav-item border border-light rounded mx-1">

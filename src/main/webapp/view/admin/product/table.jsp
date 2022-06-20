@@ -53,11 +53,11 @@
         <div class="col-auto w-100">
             <nav aria-label="Page navigation example w-100">
                 <ul class="pagination w-100 d-flex justify-content-center">
-                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=0">First page</a></li>
-                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.number - 1 }" >Previous page</a></li>
+                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/product/index?page=0">First page</a></li>
+                    <li class="page-item ${data.number == 0 ? 'disabled' :''}"><a class="page-link" href="/admin/product/index?page=${ data.number - 1 }" >Previous page</a></li>
                     <li class="page-item"><a class="page-link"> ${data.number + 1}/${data.totalPages}</a></li>
-                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.number + 1 }">Next page</a></li>
-                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/category/index?page=${ data.totalPages - 1 }">Last page</a></li>
+                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/product/index?page=${ data.number + 1 }">Next page</a></li>
+                    <li class="page-item ${data.number == data.totalPages - 1 ? 'disabled' :''}"><a class="page-link" href="/admin/product/index?page=${ data.totalPages - 1 }">Last page</a></li>
                 </ul>
             </nav>
         </div>

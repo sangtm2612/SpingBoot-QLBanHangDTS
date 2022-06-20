@@ -8,6 +8,7 @@ import com.example.sangtmph17730_asm.entities.Product;
 import com.example.sangtmph17730_asm.repository.*;
 import com.example.sangtmph17730_asm.services.AccountServiceImp;
 import com.example.sangtmph17730_asm.utils.ExportUtil;
+import com.example.sangtmph17730_asm.utils.ReadExcel;
 import org.apache.naming.java.javaURLContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +42,9 @@ public class ProductController {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    HttpSession session;
 
 
     @GetMapping("/index")
@@ -61,11 +66,37 @@ public class ProductController {
     @GetMapping("/export")
     public String export() {
         try {
-            ExportUtil.writeExcel(productRepository.findAll(), app.getRealPath("/file/excel/product.xlsx"));
+            System.out.println(app.getRealPath("/file/excel/product.xlsx"));
+//            File file = new File(app.getRealPath("/file/excel/product.xlsx"));
+//            if (!file.exists()) {
+//                file.mkdir();
+//            }
+//            file.canWrite();
+            ExportUtil.writeExcel(productRepository.findAll(), "C:/Users/TranSang/Desktop/product.xlsx");
+            session.setAttribute("message", "Export successfully!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "admin/layout";
+        return "redirect:/admin/product/index";
+    }
+
+    @PostMapping("/import")
+    public String importEx(
+            @RequestParam("excel")MultipartFile excel
+    ) {
+        if (!excel.isEmpty()) {
+            String filename = excel.getOriginalFilename();
+            File file = new File(app.getRealPath("/files/excel/" + filename));
+            try {
+                excel.transferTo(file);
+                List<Product> products = ReadExcel.readExcel(categoryRepository ,file.getAbsolutePath());
+                productRepository.saveAllAndFlush(products);
+                session.setAttribute("message", "Import succesfully!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return "redirect:/admin/product/index";
     }
 
     @PostMapping("/store")

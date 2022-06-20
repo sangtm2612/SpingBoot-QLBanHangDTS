@@ -31,7 +31,27 @@
 				<li class="nav-item"><a class="nav-link"
 										href="/home/guest/cart">Cart</a></li>
 				<li class="nav-item"><a class="nav-link" href=""
-										data-bs-toggle="modal" data-bs-target="#exampleModal3">History</a></li>
+										data-bs-toggle="modal" data-bs-target="#exampleModal8">History</a></li>
+
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal8" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<form action="/home/guest/search" method="post">
+						<div class="modal-body">
+							<div>
+								<label>Phone:</label>
+								<input type="text" name="phone" class="form-control">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Search</button>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</ul>
 		<span class="nav-item dropdown"> <a
 				class="nav-link dropdown-toggle text-white ps-0" ng-model="taikhoan"
@@ -48,5 +68,6 @@
 			</ul>
 		</span>
 	</div>
+
 
 </div>

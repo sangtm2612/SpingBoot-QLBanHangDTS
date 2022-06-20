@@ -43,10 +43,71 @@
                         <td>${order.address}</td>
                         <td class="fw-bold text-danger"><fmt:formatNumber type="number" pattern="##,###VNĐ" value="${order.total}"/></td>
                         <td class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
-                            <a class="btn btn-outline-secondary ${order.status == 0 ? 'active' : 'disabled'}">Wait</a>
-                            <a class="btn btn-outline-primary ${order.status == 1 ? 'active' : order.status == 2 || order.status == 3 ? 'disabled' : ''}" href="/admin/order/status/update/1/${order.id}">Prepare</a>
-                            <a class="btn btn-outline-warning ${order.status == 2 ? 'active' : order.status == 0 || order.status == 3 ? 'disabled' : ''}" href="/admin/order/status/update/2/${order.id}">Transport</a>
-                            <a class="btn btn-outline-success ${order.status == 3 ? 'active' : order.status == 0 || order.status == 1 ? 'disabled' : ''}" href="/admin/order/status/update/3/${order.id}">Complete</a>
+                            <button class="btn btn-outline-primary ${order.status == 1 ? 'active' : order.status == 2 || order.status == 3 ? 'disabled' : ''}" data-bs-toggle="modal" data-bs-target="#examplePrepare${order.id}">Prepare</button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="examplePrepare${order.id}" tabindex="-1" aria-labelledby="exampleModalPrepare" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalPrepare">Message</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Do you want to change the order status to <strong class="text-primary">prepare</strong>?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a class="btn btn-primary" href="/admin/order/status/update/1/${order.id}">Confirm</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-outline-warning ${order.status == 2 ? 'active' : order.status == 0 || order.status == 3 ? 'disabled' : ''}" data-bs-toggle="modal" data-bs-target="#exampleTransport${order.id}">Transport</button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleTransport${order.id}" tabindex="-1" aria-labelledby="exampleModalTransport" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalTransport">Message</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Do you want to change the order status to <strong class="text-warning">transport</strong>?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a class="btn btn-primary" href="/admin/order/status/update/2/${order.id}">Confirm</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-outline-success ${order.status == 3 ? 'active' : order.status == 0 || order.status == 1 ? 'disabled' : ''}" data-bs-toggle="modal" data-bs-target="#exampleComplete${order.id}">Complete</button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleComplete${order.id}" tabindex="-1" aria-labelledby="exampleModalComplete" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalComplete">Message</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Do you want to change the order status to <strong class="text-success">complete</strong>?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a class="btn btn-primary" href="/admin/order/status/update/3/${order.id}">Confirm</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
                         </td>
                         <td><a class="btn btn-primary" href="/admin/order/view/${order.id}">View</a></td>
                         <td><a class="btn btn-primary ${order.status == 2 || order.status == 3 ? 'disabled' : ''}" href="/admin/order/edit/${order.id}">Edit</a></td>

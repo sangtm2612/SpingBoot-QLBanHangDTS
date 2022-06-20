@@ -2,6 +2,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div>
     <h1>ProductManagement</h1>
+    <c:if test="${!empty sessionScope.error}">
+        <div class="alert alert-danger mt-3" role="alert">
+                ${sessionScope.error}
+        </div>
+        <c:remove var="error" scope="session"></c:remove>
+    </c:if>
+    <c:if test="${!empty sessionScope.message}">
+        <div class="alert alert-success mt-3" role="alert">
+                ${sessionScope.message}
+        </div>
+        <c:remove var="message" scope="session"></c:remove>
+    </c:if>
     <%--@elvariable id="pro" type="lombok"--%>
     <form:form action="/admin/product/update/${pro.id}" method="post" modelAttribute="pro">
 <%--        <form:select cssClass="form-select" path="categoryId">--%>
